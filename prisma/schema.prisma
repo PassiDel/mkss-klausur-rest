@@ -15,8 +15,8 @@ model Parcel {
   status       String    @default("NEW") // NEW, SCHEDULED, IN_DELIVERY, DELIVERED
   sender       String
   receipient   String
-  schedule     Schedule?
-  dropoffPerms Dropoff?
+  schedule     DateTime?
+  dropoffPerms String?
 }
 
 model User {
@@ -24,16 +24,4 @@ model User {
   login    String @unique
   password String
   role     Int // 1 = User, 2 = Driver, 0 = Admin
-}
-
-model Schedule {
-  parcelId Int      @unique
-  parcel   Parcel   @relation(fields: [parcelId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  date     DateTime
-}
-
-model Dropoff {
-  parcelId Int    @unique
-  parcel   Parcel @relation(fields: [parcelId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  where    String
 }

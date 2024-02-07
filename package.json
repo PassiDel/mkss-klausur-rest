@@ -1,13 +1,18 @@
 {
   "scripts": {
     "dev": "bun run --hot src/index.ts",
+    "start": "bun run src/index.ts",
     "format": "prettier --write .",
     "check": "prettier --check .",
-    "migrate": "prisma db push"
+    "migrate": "prisma db push",
+    "seed": "bun run prisma/seed.ts"
   },
   "dependencies": {
+    "@hono/swagger-ui": "^0.2.1",
+    "@hono/zod-openapi": "^0.9.6",
     "@prisma/client": "^5.9.1",
-    "hono": "^3.12.8"
+    "hono": "^3.12.8",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/bun": "latest",

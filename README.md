@@ -7,6 +7,8 @@ bun install
 To run:
 
 ```sh
+bun run migrate
+bun run seed
 bun run dev
 ```
 
