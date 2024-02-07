@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Parcel {
+  id           Int       @id @default(autoincrement())
+  status       String    @default("NEW") // NEW, SCHEDULED, IN_DELIVERY, DELIVERED
+  sender       String
+  receipient   String
+  schedule     Schedule?
+  dropoffPerms Dropoff?
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  login    String @unique
+  password String
+  role     Int // 1 = User, 2 = Driver, 0 = Admin
+}
+
+model Schedule {
+  parcelId Int      @unique
+  parcel   Parcel   @relation(fields: [parcelId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  date     DateTime
+}
+
+model Dropoff {
+  parcelId Int    @unique
+  parcel   Parcel @relation(fields: [parcelId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  where    String
+}

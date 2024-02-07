@@ -2,13 +2,16 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "format": "prettier --write .",
-    "check": "prettier --check ."
+    "check": "prettier --check .",
+    "migrate": "prisma db push"
   },
   "dependencies": {
+    "@prisma/client": "^5.9.1",
     "hono": "^3.12.8"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "prisma": "^5.9.1"
   }
 }
