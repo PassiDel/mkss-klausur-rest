@@ -13,7 +13,10 @@ import { ZodError } from 'zod';
 
 export const prisma = new PrismaClient();
 const app = new OpenAPIHono();
-app.use('*', logger(), auth());
+if (process.env.NODE_ENV !== 'test') {
+  app.use('*', logger());
+}
+app.use('*', auth());
 app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
   type: 'http',
   scheme: 'bearer',
@@ -67,18 +70,16 @@ app.openapi(updateParcelRoute, async (c) => {
 
 app.openapi(getParcelRoute, async (c) => {
   const { id } = c.req.valid('param');
-  try {
-    const parcel = await prisma.parcel.findUnique({
-      where: { id }
-    });
-
-    return c.json(parcel as any);
-  } catch (e) {
+  const parcel = await prisma.parcel.findUnique({
+    where: { id }
+  });
+  if (!parcel) {
     return c.json(
       { success: false, name: `Parcel with id ${id} not found!` },
       404
     );
   }
+  return c.json(parcel as any);
 });
 
 app.doc('/doc', (c) => ({

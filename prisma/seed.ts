@@ -1,9 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
-
-export async function main() {
-  await prisma.$connect();
+export async function main(prisma: PrismaClient) {
   const toCreate = [
     prisma.user.upsert({
       where: { id: 1 },
@@ -127,17 +124,23 @@ export async function main() {
   ];
 
   for (let create of toCreate) {
-    console.log(await create);
+    const result = await create;
+    if (process.env.NODE_ENV !== 'test') {
+      console.log(result);
+    }
   }
 }
-
-// @ts-ignore
-await main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+if (process.env.NODE_ENV !== 'test') {
+  (async () => {
+    const prisma = new PrismaClient();
+    await main(prisma)
+      .then(async () => {
+        await prisma.$disconnect();
+      })
+      .catch(async (e) => {
+        console.error(e);
+        await prisma.$disconnect();
+        process.exit(1);
+      });
+  })();
+}
