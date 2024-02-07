@@ -131,16 +131,15 @@ export async function main(prisma: PrismaClient) {
   }
 }
 if (process.env.NODE_ENV !== 'test') {
-  (async () => {
-    const prisma = new PrismaClient();
-    await main(prisma)
-      .then(async () => {
-        await prisma.$disconnect();
-      })
-      .catch(async (e) => {
-        console.error(e);
-        await prisma.$disconnect();
-        process.exit(1);
-      });
-  })();
+  const prisma = new PrismaClient();
+  // @ts-ignore
+  await main(prisma)
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+      process.exit(1);
+    });
 }

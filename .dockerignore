@@ -1,0 +1,14 @@
+.github
+.gitignore
+.env
+.env.example
+.prettierignore
+.prettierrc.json
+README.md
+prisma/*.db
+node_modules
+Dockerfile
+*.test.ts
+.dockerignore
+.git
+.idea
